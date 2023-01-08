@@ -9,6 +9,8 @@ module.exports = {
         result = await this.obtenerItems(collectionType, criterio)
         if (result === null)
             return result
+        else if (result.length==0)
+            return undefined
         return result[0]
     },
     obtenerItems: async function (collectionType, criterio) {
@@ -20,7 +22,6 @@ module.exports = {
         var result;
         try {
             result = await collection.find(criterio).toArray()
-
         } catch (error) {
             console.error("Error al obtener: " + error);
             result = null;
