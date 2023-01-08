@@ -58,7 +58,7 @@ module.exports = {
         }
         return result;
     },
-    modificarItem: async function (collectionType, criterio, change, remove) {
+    modificarItem: async function (collectionType, criterio, change) {
         await this.client.connect();
         console.log('Connected successfully to server');
         const db = this.client.db(this.dbName);
@@ -68,7 +68,6 @@ module.exports = {
         try {
             result = await collection.updateOne(criterio, {
                 $set: change,
-                $unset: remove
             });
         }
         catch (error) {

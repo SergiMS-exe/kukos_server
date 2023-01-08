@@ -28,12 +28,13 @@ module.exports = function(app, gestorBD){
         var usuario = {
             nombre: req.body.nombre,
             email: req.body.email,
+            lastLogin: Date.now(),
             password: req.body.password
         }
 
         const newUser = await gestorBD.insertarItem("user", usuario)
 
-        if (newUser==null){ //Fallo en la base de datos      
+        if (newUser===null){ //Fallo en la base de datos      
             bdFallo(res)
         } else {
             res.status(200)
@@ -41,6 +42,24 @@ module.exports = function(app, gestorBD){
             res.send(usuario)
         }
 
+    })
+
+    app.post("/updateLastLogin", async function(req, res){
+        var usuario = {
+            _id: gestorBD.mongo.ObjectId(req.body._id)
+        }
+        const lastLogin = {
+            lastLogin: Date.now()
+        }
+
+        const modifiedLastLogin = await gestorBD.modificarItem("user", usuario, lastLogin)
+
+        if (modifiedLastLogin===null){ //Fallo en la base de datos      
+            bdFallo(res)
+        } else {
+            res.status(200)
+            res.send(modifiedLastLogin)
+        }
     })
 }
 
