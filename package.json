@@ -1,0 +1,23 @@
+{
+  "name": "kukos_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node init.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergiMS-exe/kukos_server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergiMS-exe/kukos_server/issues"
+  },
+  "homepage": "https://github.com/SergiMS-exe/kukos_server#readme",
+  "dependencies": {
+    "mongodb": "^4.12.1"
+  }
+}
