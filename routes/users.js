@@ -4,6 +4,21 @@ module.exports = function(app, gestorBD){
         res.send("Prueba ok")
     })
 
+    app.get("/getUserById", async function(req, res){
+        var usuario = {
+            _id : gestorBD.mongo.ObjectId(req.query._id)
+        }
+
+        const user = await gestorBD.obtenerItem("user", usuario)
+        
+        if (user == null)
+            bdFallo(res)
+        else {
+            res.status(200)
+            res.send(user)
+        }
+    })
+
     app.post("/login", async function(req,res){
         let criterio = {
             email: req.body.email,
@@ -113,7 +128,7 @@ module.exports = function(app, gestorBD){
         }
 
         var pointsToDec = req.body.points
-        
+
         const updatePoints = await gestorBD.modificarItemPersonalizado("user", usuario, { $inc: { points: -pointsToDec } })
 
         if (updatePoints==null) {
