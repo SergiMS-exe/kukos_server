@@ -73,11 +73,11 @@ module.exports = function(app, gestorBD){
         var usuario = {
             _id: gestorBD.mongo.ObjectId(req.body._id)
         }
-        const lastLogin = {
-            lastLogin: Date.now()
+        const lastRule = {
+            lastRule: Date.now()
         }
 
-        const modifiedLastLogin = await gestorBD.modificarItem("user", usuario, lastLogin)
+        const modifiedLastLogin = await gestorBD.modificarItem("user", usuario, lastRule)
 
         if (modifiedLastLogin===null){ //Fallo en la base de datos      
             bdFallo(res)
