@@ -90,6 +90,23 @@ module.exports = function(app, gestorBD){
             res.send(user)
         }
     })
+
+    app.put("/addPoints", async function(req, res){
+        var usuario = {
+            _id : gestorBD.mongo.ObjectId(req.body._id)
+        }
+
+        const pointsToAdd = req.body.pointsToAdd
+
+        const updatePoints = await gestorBD.modificarItemPersonalizado("user", usuario, { $inc: { points: pointsToAdd } })
+        if (updatePoints==null) {
+            bdFallo(res)
+        } else {
+            res.status(200)
+            res.send(await gestorBD.obtenerItem("user", usuario))
+        }
+    })
+
 }
 
 const bdFallo = (res)=>{
