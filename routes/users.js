@@ -10,7 +10,7 @@ module.exports = function(app, gestorBD){
         }
 
         const user = await gestorBD.obtenerItem("user", usuario)
-        
+
         if (user == null)
             bdFallo(res)
         else {
@@ -30,10 +30,11 @@ module.exports = function(app, gestorBD){
         if (user===null){ //Fallo en la base de datos      
             bdFallo(res)
         } else {
-            res.status(200)
             if (user==undefined){ //Usuario no encontrado
+                res.status(404)
                 res.send({ message: "Usuario no encontado"})
             } else { //Usuario encontrado
+                res.status(200)
                 res.send(user)
             }
         }
@@ -46,6 +47,14 @@ module.exports = function(app, gestorBD){
             lastLogin: Date.now(),
             password: req.body.password,
             moviesSaved : []
+        }
+
+        const checkUserAlreadyRegistered = await gestorBD.obtenerItem("user", {email: req.body.email})
+
+        if (checkUserAlreadyRegistered!=undefined){
+            res.status(409)
+            res.send({ error: "Usuario ya registrado"})
+            return
         }
 
         const newUser = await gestorBD.insertarItem("user", usuario)
