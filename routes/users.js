@@ -45,7 +45,7 @@ module.exports = function(app, gestorBD){
 
     })
 
-    app.put("/updateLastLogin", async function(req, res){
+    app.put("/updateLastRule", async function(req, res){
         var usuario = {
             _id: gestorBD.mongo.ObjectId(req.body._id)
         }
@@ -63,7 +63,7 @@ module.exports = function(app, gestorBD){
         }
     })
 
-    app.put("/saveMovie", async function(req, res){
+    app.post("/saveMovie", async function(req, res){
         var usuario = {
             _id: gestorBD.mongo.ObjectId(req.body._id)
         }
@@ -96,7 +96,7 @@ module.exports = function(app, gestorBD){
             _id : gestorBD.mongo.ObjectId(req.body._id)
         }
 
-        const pointsToAdd = req.body.pointsToAdd
+        const pointsToAdd = req.body.points
 
         const updatePoints = await gestorBD.modificarItemPersonalizado("user", usuario, { $inc: { points: pointsToAdd } })
         if (updatePoints==null) {
@@ -107,6 +107,22 @@ module.exports = function(app, gestorBD){
         }
     })
 
+    app.put("/decPoints", async function(req, res){
+        var usuario = {
+            _id : gestorBD.mongo.ObjectId(req.body._id)
+        }
+
+        var pointsToDec = req.body.points
+        
+        const updatePoints = await gestorBD.modificarItemPersonalizado("user", usuario, { $inc: { points: -pointsToDec } })
+
+        if (updatePoints==null) {
+            bdFallo(res)
+        } else {
+            res.status(200)
+            res.send(await gestorBD.obtenerItem("user", usuario))
+        }
+    })
 }
 
 const bdFallo = (res)=>{
