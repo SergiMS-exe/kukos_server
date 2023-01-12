@@ -20,10 +20,12 @@ module.exports = function(app, gestorBD){
     })
 
     app.post("/login", async function(req,res){
-        let criterio = {
-            email: req.body.email,
-            password: req.body.password
-        }
+        let criterio = { $or : [
+            {email: req.body.user,
+            password: req.body.password},
+            {nickName: req.body.user,
+                password: req.body.password}
+        ]}
 
         let user = await gestorBD.obtenerItem("user", criterio)
 
