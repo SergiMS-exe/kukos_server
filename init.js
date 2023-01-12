@@ -17,4 +17,8 @@ let client = new mongo.MongoClient("mongodb+srv://admin:admin@cluster0.xk8rxrb.m
 let gestorBD = require("./services/gestorBD");
 gestorBD.init(client, mongo);
 
+//Api de justWatch
+const JustWatch = require('justwatch-api');
+
 require("./routes/users")(app, gestorBD)
+require("./routes/justWatchApi")(app, JustWatch)
