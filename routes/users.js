@@ -121,21 +121,22 @@ module.exports = function(app, gestorBD){
         }
     })
 
-    app.put("/decPoints", async function(req, res){
+    app.put("/updateProfilePhoto", async function (req, res){
         var usuario = {
             _id : gestorBD.mongo.ObjectId(req.body._id)
         }
 
-        var pointsToDec = req.body.points
+        var profilePhoto = {profilePhoto: req.body.profilePhoto}
 
-        const updatePoints = await gestorBD.modificarItemPersonalizado("user", usuario, { $inc: { points: -pointsToDec } })
+        const updateProfilePhoto = await gestorBD.modificarItem("user", usuario, profilePhoto)
 
-        if (updatePoints==null) {
+        if (updateProfilePhoto===null){ //Fallo en la base de datos      
             bdFallo(res)
-        } else {
+        } else {           
             res.status(200)
             res.send(await gestorBD.obtenerItem("user", usuario))
         }
+        
     })
 }
 
