@@ -44,9 +44,11 @@ module.exports = function(app, gestorBD){
         var usuario = {
             nombre: req.body.nombre,
             email: req.body.email,
+            nickName: req.body.nickName,
             lastLogin: Date.now(),
             password: req.body.password,
-            moviesSaved : []
+            moviesSaved : [],
+            points: 200
         }
 
         const checkUserAlreadyRegistered = await gestorBD.obtenerItem("user", {email: req.body.email})
