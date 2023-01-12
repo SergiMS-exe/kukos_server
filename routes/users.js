@@ -73,17 +73,19 @@ module.exports = function(app, gestorBD){
         var usuario = {
             _id: gestorBD.mongo.ObjectId(req.body._id)
         }
-        const lastRule = {
-            lastRule: Date.now()
+        const mods = { 
+            $inc: { points: req.body.points },
+            $set: { lastRule: Date.now() } 
         }
+   
 
-        const modifiedLastLogin = await gestorBD.modificarItem("user", usuario, lastRule)
+        const modifiedLastLogin = await gestorBD.modificarItemPersonalizado("user", usuario, mods)
 
         if (modifiedLastLogin===null){ //Fallo en la base de datos      
             bdFallo(res)
         } else {
             res.status(200)
-            res.send(modifiedLastLogin)
+            res.send(await gestorBD.obtenerItem("user", usuario))
         }
     })
 
@@ -112,22 +114,6 @@ module.exports = function(app, gestorBD){
         } else {
             res.status(200)
             res.send(user)
-        }
-    })
-
-    app.put("/addPoints", async function(req, res){
-        var usuario = {
-            _id : gestorBD.mongo.ObjectId(req.body._id)
-        }
-
-        const pointsToAdd = req.body.points
-
-        const updatePoints = await gestorBD.modificarItemPersonalizado("user", usuario, { $inc: { points: pointsToAdd } })
-        if (updatePoints==null) {
-            bdFallo(res)
-        } else {
-            res.status(200)
-            res.send(await gestorBD.obtenerItem("user", usuario))
         }
     })
 
