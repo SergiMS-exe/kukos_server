@@ -22,9 +22,20 @@ module.exports = function(app, JustWatch){
                 }
             }
         }
+        
+        res.status((peliAObtener!=="empty")?200:202)
+        res.send((peliAObtener!=="empty")?{data:peliAObtener.offers}:{})
+    })
+
+    app.get("/searchProviders", async function(req, res){
+        var justwatch = new JustWatch({locale: "es_ES"});
+
+        var searchResult = await justwatch.search({query: req.query.title});
+
+        console.log(searchResult.items);
 
         res.status(200)
-        res.send((peliAObtener!=="empty")?{data:peliAObtener.offers}:{})
+        res.send({data:searchResult.items})
     })
 }
 
