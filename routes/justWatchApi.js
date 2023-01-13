@@ -23,7 +23,8 @@ module.exports = function(app, JustWatch){
             }
         }
 
-        res.send((peliAObtener!=="empty")?peliAObtener.offers[0]:{})
+        res.status(200)
+        res.send((peliAObtener!=="empty")?{data:peliAObtener.offers}:{})
     })
 }
 
