@@ -23,7 +23,7 @@ module.exports = function(app, JustWatch){
             }
         }
         
-        res.status((peliAObtener!=="empty")?200:202)
+        res.status((peliAObtener!=="empty" && peliAObtener.offers!==undefined)?200:202)
         res.send((peliAObtener!=="empty")?{data:peliAObtener.offers}:{})
     })
 
@@ -31,8 +31,6 @@ module.exports = function(app, JustWatch){
         var justwatch = new JustWatch({locale: "es_ES"});
 
         var searchResult = await justwatch.search({query: req.query.title});
-
-        console.log(searchResult.items);
 
         res.status(200)
         res.send({data:searchResult.items})
